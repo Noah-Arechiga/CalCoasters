@@ -1,0 +1,85 @@
+// prisma/schema.prisma
+
+// Purpose: defines the database tables (models) for the app and how they relate
+// Prisma reads this file to generate a type-safe client AND to create/update
+// the actual tables in Postgres via `prisma migrate`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Park {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  lat       Float
+  lng       Float
+  address   String?
+
+  // Maps this park to its ID in the Queue-Times.com API, so it know
+  // which external park to poll for live wait times
+  queueTimesParkId Int?
+
+  coasters  Coaster[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum CoasterType {
+  STEEL
+  WOOD
+  HYBRID
+  LAUNCH
+  INVERTED
+  FLOORLESS
+  WING
+}
+
+enum CoasterStatus {
+  OPERATING
+  CLOSED_TEMPORARILY
+  CLOSED_PERMANENTLY
+  UNDER_CONSTRUCTION
+}
+
+model Coaster {
+  id             String        @id @default(cuid())
+  name           String
+  slug           String        @unique
+  parkId         String
+  park           Park          @relation(fields: [parkId], references: [id])
+
+  manufacturer   String?
+  type           CoasterType
+  status         CoasterStatus @default(OPERATING)
+
+  heightFt       Float?
+  dropFt         Float?
+  speedMph       Float?
+  lengthFt       Float?
+  inversions     Int           @default(0)
+  durationSec    Int?
+  maxGForce      Float?
+
+  // Your own curated 1-10 rating, used by the intensity quiz
+  intensityScore Int
+
+  lat            Float
+  lng            Float
+
+  // Maps this coaster to its ride ID in the Queue-Times.com API,
+  // so we can attach a live wait time to it
+  queueTimesRideId Int?
+
+  openedYear     Int?
+
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
