@@ -12,19 +12,20 @@ async function main() {
   // Six Flags Magic Mountain
   const magicMountain = await prisma.park.upsert({
     where: { slug: 'six-flags-magic-mountain' },
-    update: {},
+    update: { queueTimesParkId: 32 },
     create: {
       name: 'Six Flags Magic Mountain',
       slug: 'six-flags-magic-mountain',
       lat: 34.4233,
       lng: -118.5965,
       address: '26101 Magic Mountain Pkwy, Valencia, CA 91355',
+      queueTimesParkId: 32,
     },
   });
 
   await prisma.coaster.upsert({
     where: { slug: 'x2' },
-    update: {},
+    update: { queueTimesRideId: 2881 },
     create: {
       name: 'X2',
       slug: 'x2',
@@ -40,12 +41,13 @@ async function main() {
       lat: 34.4241,
       lng: -118.5978,
       openedYear: 2002,
+      queueTimesRideId: 2881,
     },
   });
 
   await prisma.coaster.upsert({
     where: { slug: 'twisted-colossus' },
-    update: {},
+    update: { queueTimesRideId: 2889 },
     create: {
       name: 'Twisted Colossus',
       slug: 'twisted-colossus',
@@ -61,25 +63,27 @@ async function main() {
       lat: 34.4225,
       lng: -118.5955,
       openedYear: 2015,
+      queueTimesRideId: 2889,
     },
   });
 
   // Knott's Berry Farm 
   const knotts = await prisma.park.upsert({
     where: { slug: 'knotts-berry-farm' },
-    update: {},
+    update: { queueTimesParkId: 61 },
     create: {
       name: "Knott's Berry Farm",
       slug: 'knotts-berry-farm',
       lat: 33.8455,
       lng: -117.9959,
       address: '8039 Beach Blvd, Buena Park, CA 90620',
+      queueTimesParkId: 61,
     },
   });
 
   await prisma.coaster.upsert({
     where: { slug: 'ghostrider' },
-    update: {},
+    update: { queueTimesRideId: 5912 },
     create: {
       name: 'GhostRider',
       slug: 'ghostrider',
@@ -95,25 +99,27 @@ async function main() {
       lat: 33.8459,
       lng: -117.9975,
       openedYear: 1998,
+      queueTimesRideId: 5912,
     },
   });
 
   // Disneyland
   const disneyland = await prisma.park.upsert({
     where: { slug: 'disneyland' },
-    update: {},
+    update: { queueTimesParkId: 16 },
     create: {
       name: 'Disneyland Park',
       slug: 'disneyland',
       lat: 33.8121,
       lng: -117.919,
       address: '1313 Disneyland Dr, Anaheim, CA 92802',
+      queueTimesParkId: 16,
     },
   });
 
   await prisma.coaster.upsert({
     where: { slug: 'space-mountain' },
-    update: {},
+    update: { queueTimesRideId: 284 },
     create: {
       name: 'Space Mountain',
       slug: 'space-mountain',
@@ -128,6 +134,7 @@ async function main() {
       lat: 33.8135,
       lng: -117.9227,
       openedYear: 1977,
+      queueTimesRideId: 284,
     },
   });
 
