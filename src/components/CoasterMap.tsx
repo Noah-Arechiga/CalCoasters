@@ -1,4 +1,4 @@
-// src/components/CoasterMap.jsx
+// src/components/CoasterMap.tsx
 
 'use client';
 
