@@ -1,5 +1,3 @@
-// src/components/CoasterMap.tsx
-
 'use client';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -7,9 +5,12 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { CoasterMapData } from '@/types/coaster';
 
-// Leaflet's default marker icon files don't load correctly once bundled
-// by Next.js —> this resets the icon URLs to load from a CDN instead,
-// so map pins actually appear instead of showing broken images.
+// src/components/CoasterMap.tsx
+
+// Purpose: // Leaflet's default marker icon files don't load correctly once 
+// bundled by Next.js —> this resets the icon URLs to load from a CDN instead,
+// so map pins actually appear instead of showing broken images
+
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',

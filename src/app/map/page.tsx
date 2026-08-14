@@ -1,12 +1,12 @@
+import { db } from '@/lib/db';
+import MapPageClient from './MapPageClient';
+
 // src/app/map/page.tsx
 
 // Purpose: This is a Server Component, it runs on the server, queries 
 // Postgres directly via Prisma (no API route needed, since the page 
 // itself runs server-side), reshapes the data to match CoasterMapData, then 
 // hands it off to the client wrapper to render
-
-import { db } from '@/lib/db';
-import MapPageClient from './MapPageClient';
 
 export default async function MapPage() {
   const coasters = await db.coaster.findMany({
