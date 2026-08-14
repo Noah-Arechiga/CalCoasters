@@ -3,6 +3,7 @@ import Link from 'next/link';
 const links = [
   { href: '/map', label: 'Map' },
   { href: '/coasters', label: 'Coasters' },
+  { href: '/parks', label: 'Parks' },
   { href: '/near-me', label: 'Near Me' },
   { href: '/compare', label: 'Compare' },
   { href: '/quiz', label: 'Quiz' },
