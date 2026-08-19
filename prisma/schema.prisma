@@ -97,7 +97,7 @@ model Coaster {
   lng            Float
 
   // Maps this coaster to its ride ID in the Queue-Times.com API,
-  // so we can attach a live wait time to it
+  // so it can attach a live wait time to it
   queueTimesRideId Int?
 
   openedYear     Int?
