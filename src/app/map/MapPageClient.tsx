@@ -5,8 +5,8 @@ import type { CoasterMapData } from '@/types/coaster';
 
 // src/app/map/MapPageClient.tsx
 
-// Purpose: Leaflet needs direct access to the browser's `window` object, which
-// doesn't exist while Next.js is rendering the page on the server
+// Purpose: Lazy-loads the actual Leaflet map with ssr: false, since Leaflet
+// needs direct browser access and can't render on the server
 
 const CoasterMap = dynamic(() => import('@/components/CoasterMap'), {
   ssr: false,
