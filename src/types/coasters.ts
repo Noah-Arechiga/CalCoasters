@@ -12,6 +12,7 @@ export interface CoasterMapData {
   lng: number;
   intensityScore: number;
   type: string;
+  design: string;
   heightFt: number | null;
   speedMph: number | null;
   park: {
