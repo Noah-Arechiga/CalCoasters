@@ -1,7 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
-import { getParkWaitTimes, findRideWaitTime } from '@/lib/queue-times';
-
 // src/app/api/parks/[parkId]/status/route.ts
 
 // Purpose: Backend endpoint. The frontend calls this route
@@ -9,6 +5,10 @@ import { getParkWaitTimes, findRideWaitTime } from '@/lib/queue-times';
 //   1. Looking up the park + its coasters in our database
 //   2. Fetching live wait times from Queue-Times.com
 //   3. Merging the two together into one clean response
+
+import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
+import { getParkWaitTimes, findRideWaitTime } from '@/lib/queue-times';
 
 export async function GET(
   request: NextRequest,
