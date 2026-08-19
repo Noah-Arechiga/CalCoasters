@@ -21,6 +21,7 @@ model Park {
   lat       Float
   lng       Float
   address   String?
+  region    ParkRegion @default(LA)
 
   // Maps this park to its ID in the Queue-Times.com API, so it know
   // which external park to poll for live wait times
@@ -36,10 +37,23 @@ enum CoasterType {
   STEEL
   WOOD
   HYBRID
-  LAUNCH
+}
+
+enum CoasterDesign {
+  SIT_DOWN
   INVERTED
-  FLOORLESS
+  FLYING
   WING
+  SUSPENDED
+  STAND_UP
+  FLOORLESS
+  FOURTH_DIMENSION
+  SINGLE_RAIL
+  BOBSLED
+  MINE_TRAIN
+  WATER_COASTER
+  DIVE
+  MOTORBIKE
 }
 
 enum CoasterStatus {
@@ -47,6 +61,12 @@ enum CoasterStatus {
   CLOSED_TEMPORARILY
   CLOSED_PERMANENTLY
   UNDER_CONSTRUCTION
+}
+
+enum ParkRegion {
+  LA
+  OC
+  SD
 }
 
 model Coaster {
@@ -58,6 +78,7 @@ model Coaster {
 
   manufacturer   String?
   type           CoasterType
+  design         CoasterDesign @default(SIT_DOWN)
   status         CoasterStatus @default(OPERATING)
 
   heightFt       Float?
