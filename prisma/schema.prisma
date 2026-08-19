@@ -91,6 +91,7 @@ model Coaster {
 
   // Your own curated 1-10 rating, used by the intensity quiz
   intensityScore Int
+  imageUrl       String?
 
   lat            Float
   lng            Float
