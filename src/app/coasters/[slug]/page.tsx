@@ -1,12 +1,13 @@
 // src/app/coasters/[slug]/page.tsx
 
-// Purpose: Looks up one coaster by its slug Fetches live wait 
-// time the same way API route does, but directly, 
-// since this page already runs on the server
+// Purpose: Gets one specific coaster by its URL slug, plus its live wait time,
+// and renders the detail page with image and stats/specs
 
 import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
 import { getParkWaitTimes, findRideWaitTime } from '@/lib/queue-times';
+import CoasterThumb from '@/components/CoasterThumb';
+import { formatEnumLabel } from '@/lib/format-enum';
 
 export default async function CoasterDetailPage({
   params,
@@ -24,9 +25,6 @@ export default async function CoasterDetailPage({
     notFound();
   }
 
-  // Fetch live status directly here, same pattern as API route
-  // this page is itself a server-side component, so it can call the
-  // Queue-Times helper directly without needing to hit API route
   let isOpen: boolean | null = null;
   let waitMinutes: number | null = null;
 
@@ -44,68 +42,72 @@ export default async function CoasterDetailPage({
   }
 
   return (
-    <main style={{ padding: '2rem', maxWidth: '700px', margin: '0 auto' }}>
-      <h1>{coaster.name}</h1>
-      <p style={{ color: '#666' }}>{coaster.park.name}</p>
+    <main className="bg-white min-h-full px-6 py-16">
+      <div className="max-w-2xl mx-auto">
+        <p className="font-mono text-xs uppercase tracking-widest text-royal mb-3">
+          {coaster.park.name}
+        </p>
+        <h1 className="text-6xl mb-4">{coaster.name}</h1>
 
-      {isOpen !== null && (
-        <div
-          style={{
-            display: 'inline-block',
-            padding: '0.5rem 1rem',
-            borderRadius: '6px',
-            background: isOpen ? '#d4edda' : '#f8d7da',
-            color: isOpen ? '#155724' : '#721c24',
-            marginBottom: '1.5rem',
-          }}
-        >
-          {isOpen ? `Open — ${waitMinutes} min wait` : 'Closed'}
+        {isOpen !== null && (
+          <div className="mb-6">
+            <span className={isOpen ? 'badge-open' : 'badge-closed'}>
+              {isOpen ? `Open · ${waitMinutes} min wait` : 'Closed'}
+            </span>
+          </div>
+        )}
+
+        <div className="rounded-2xl overflow-hidden border border-steel mb-8">
+          <CoasterThumb
+            imageUrl={coaster.imageUrl}
+            name={coaster.name}
+            type={coaster.type}
+            design={coaster.design}
+            className="w-full h-64 sm:h-80"
+          />
         </div>
-      )}
 
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <tbody>
+        <div className="card">
           <StatRow label="Type" value={coaster.type} />
+          <StatRow label="Design" value={formatEnumLabel(coaster.design)} />
           <StatRow label="Manufacturer" value={coaster.manufacturer ?? '—'} />
-          <StatRow
-            label="Height"
-            value={coaster.heightFt ? `${coaster.heightFt} ft` : '—'}
-          />
-          <StatRow
-            label="Drop"
-            value={coaster.dropFt ? `${coaster.dropFt} ft` : '—'}
-          />
-          <StatRow
-            label="Speed"
-            value={coaster.speedMph ? `${coaster.speedMph} mph` : '—'}
-          />
+          <StatRow label="Height" value={coaster.heightFt ? `${coaster.heightFt} ft` : '—'} />
+          <StatRow label="Drop" value={coaster.dropFt ? `${coaster.dropFt} ft` : '—'} />
+          <StatRow label="Speed" value={coaster.speedMph ? `${coaster.speedMph} mph` : '—'} />
           <StatRow label="Inversions" value={String(coaster.inversions)} />
           <StatRow
             label="Duration"
             value={
               coaster.durationSec
-                ? `${Math.floor(coaster.durationSec / 60)}:${String(
-                    coaster.durationSec % 60
-                  ).padStart(2, '0')}`
+                ? `${Math.floor(coaster.durationSec / 60)}:${String(coaster.durationSec % 60).padStart(2, '0')}`
                 : '—'
             }
           />
-          <StatRow
-            label="Intensity"
-            value={`${coaster.intensityScore} / 10`}
-          />
-          <StatRow label="Opened" value={String(coaster.openedYear ?? '—')} />
-        </tbody>
-      </table>
+          <StatRow label="Intensity" value={`${coaster.intensityScore} / 10`} highlight />
+          <StatRow label="Opened" value={String(coaster.openedYear ?? '—')} last />
+        </div>
+      </div>
     </main>
   );
 }
 
-function StatRow({ label, value }: { label: string; value: string }) {
+function StatRow({
+  label,
+  value,
+  highlight = false,
+  last = false,
+}: {
+  label: string;
+  value: string;
+  highlight?: boolean;
+  last?: boolean;
+}) {
   return (
-    <tr style={{ borderBottom: '1px solid #eee' }}>
-      <td style={{ padding: '0.5rem 0', color: '#666' }}>{label}</td>
-      <td style={{ padding: '0.5rem 0', fontWeight: 600 }}>{value}</td>
-    </tr>
+    <div className={`flex items-center justify-between py-3 ${last ? '' : 'border-b border-steel'}`}>
+      <span className="font-body text-sm text-navy-950/60">{label}</span>
+      <span className={`font-mono text-sm font-semibold ${highlight ? 'text-royal' : 'text-navy-950'}`}>
+        {value}
+      </span>
+    </div>
   );
 }
