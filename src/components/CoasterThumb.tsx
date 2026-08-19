@@ -2,12 +2,15 @@
 
 // Purpose: Renders a coaster's photo if one exists in the database,
 // or a branded gradient placeholder (showing its track type) if it
-// doesn't, so the UI never shows a broken image for un-photographed rides.
+// doesn't, so the UI never shows a broken image for un-photographed rides
+
+import { formatEnumLabel } from '@/lib/format-enum';
 
 interface CoasterThumbProps {
   imageUrl: string | null;
   name: string;
   type: string;
+  design: string;
   className?: string;
 }
 
@@ -15,6 +18,7 @@ export default function CoasterThumb({
   imageUrl,
   name,
   type,
+  design,
   className = '',
 }: CoasterThumbProps) {
   if (imageUrl) {
@@ -26,6 +30,7 @@ export default function CoasterThumb({
       className={`flex items-center justify-center bg-gradient-to-br from-navy-800 to-royal text-white ${className}`}
     >
       <span className="font-display text-lg tracking-wide opacity-70">{type}</span>
+      <span className="font-display text-lg tracking-wide opacity-70">{formatEnumLabel(design ?? type)}</span>
     </div>
   );
 }
