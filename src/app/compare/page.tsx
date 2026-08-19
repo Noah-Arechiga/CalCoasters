@@ -1,10 +1,10 @@
-import { db } from '@/lib/db';
-import CompareClient from './CompareClient';
-
 // src/app/compare/page.tsx
 
-// Purpose: A Server Component pulls everything from Postgres once, 
-// reshapes it, and hands it to a Client Component for the interactive part
+// Purpose: Gets every coaster, then hands it to CompareClient to handle 
+// the interactive comparison tool
+
+import { db } from '@/lib/db';
+import CompareClient from './CompareClient';
 
 export default async function ComparePage() {
   const coasters = await db.coaster.findMany({
@@ -17,6 +17,8 @@ export default async function ComparePage() {
     name: c.name,
     parkName: c.park.name,
     type: c.type,
+    design: c.design,
+    imageUrl: c.imageUrl,
     manufacturer: c.manufacturer,
     heightFt: c.heightFt,
     dropFt: c.dropFt,
@@ -28,10 +30,13 @@ export default async function ComparePage() {
   }));
 
   return (
-    <main style={{ padding: '2rem', maxWidth: '900px', margin: '0 auto' }}>
-      <h1>Compare Coasters</h1>
-      <p style={{ color: '#666' }}>Pick 2 or 3 coasters to compare side by side.</p>
-      <CompareClient coasters={shaped} />
+    <main className="bg-white min-h-full px-6 py-16">
+      <div className="max-w-4xl mx-auto">
+        <p className="font-mono text-xs uppercase tracking-widest text-royal mb-3">Head to Head</p>
+        <h1 className="text-5xl mb-2">Compare Coasters</h1>
+        <p className="font-body text-navy-950/60 mb-10">Search for 2 or 3 coasters to compare side by side.</p>
+        <CompareClient coasters={shaped} />
+      </div>
     </main>
   );
 }
