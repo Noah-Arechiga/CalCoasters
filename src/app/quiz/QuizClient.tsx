@@ -6,9 +6,8 @@ import { rankCoasters, type QuizAnswers } from '@/lib/quiz-scoring';
 
 // src/app/quiz/QuizClient.tsx
 
-// Purpose: Once 3 questions are answered, instead of rendering a question
-// it calls rankCoasters and shows the top 3 with a match percentage,
-// linked to each coaster's detail page.
+// Purpose: Walks through the 3 quiz questions, tracks answers, and renders
+// the top 5 ranked results once complete
 
 interface QuizCoaster {
   id: string;
@@ -16,6 +15,7 @@ interface QuizCoaster {
   slug: string;
   parkName: string;
   type: string;
+  design: string;
   intensityScore: number;
   inversions: number;
   heightFt: number | null;
@@ -32,15 +32,10 @@ const INTENSITY_OPTIONS = [
 export default function QuizClient({ coasters }: { coasters: QuizCoaster[] }) {
   const [step, setStep] = useState(0);
   const [targetIntensity, setTargetIntensity] = useState<number | null>(null);
-  const [inversionPref, setInversionPref] = useState<
-    QuizAnswers['inversionPref'] | null
-  >(null);
-  const [heightPref, setHeightPref] = useState<
-    QuizAnswers['heightPref'] | null
-  >(null);
+  const [inversionPref, setInversionPref] = useState<QuizAnswers['inversionPref'] | null>(null);
+  const [heightPref, setHeightPref] = useState<QuizAnswers['heightPref'] | null>(null);
 
-  const isComplete =
-    targetIntensity !== null && inversionPref !== null && heightPref !== null;
+  const isComplete = targetIntensity !== null && inversionPref !== null && heightPref !== null;
 
   function restart() {
     setStep(0);
@@ -50,60 +45,38 @@ export default function QuizClient({ coasters }: { coasters: QuizCoaster[] }) {
   }
 
   if (isComplete) {
-    const results = rankCoasters(coasters, {
-      targetIntensity,
-      inversionPref,
-      heightPref,
-    }).slice(0, 3);
+    const results = rankCoasters(coasters, { targetIntensity, inversionPref, heightPref }).slice(0, 5);
 
     return (
       <div>
-        <h2>Your Top Matches</h2>
+        <h2 className="text-3xl mb-6">Your Top Matches</h2>
         {results.map((coaster, i) => (
-          <Link
-            key={coaster.id}
-            href={`/coasters/${coaster.slug}`}
-            style={{
-              display: 'block',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              padding: '1rem',
-              marginBottom: '1rem',
-              textDecoration: 'none',
-              color: 'inherit',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <h3 style={{ margin: 0 }}>
-                #{i + 1} {coaster.name}
+          <Link key={coaster.id} href={`/coasters/${coaster.slug}`} className="card hover:border-royal transition-colors block mb-4">
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="text-2xl">
+                <span className="text-royal">#{i + 1}</span> {coaster.name}
               </h3>
-              <span style={{ color: '#155724', fontWeight: 700 }}>
-                {coaster.matchPercent}% match
-              </span>
+              <span className="font-mono text-sm font-bold text-royal">{coaster.matchPercent}% match</span>
             </div>
-            <p style={{ color: '#666', margin: '0.3rem 0' }}>
-              {coaster.parkName}
-            </p>
-            <p style={{ fontSize: '0.9rem', margin: 0 }}>
-              Intensity {coaster.intensityScore}/10 · {coaster.inversions}{' '}
-              inversions
+            <p className="font-body text-sm text-navy-950/60 mb-2">{coaster.parkName}</p>
+            <p className="font-mono text-xs uppercase tracking-wide text-navy-950/70">
+              Intensity {coaster.intensityScore}/10 · {coaster.inversions} inversions
               {coaster.heightFt && ` · ${coaster.heightFt} ft`}
             </p>
           </Link>
         ))}
-        <button onClick={restart} style={buttonStyle}>
+        <button onClick={restart} className="btn-outline-dark mt-2">
           Retake Quiz
         </button>
       </div>
     );
   }
 
-  // Question flow
   const questions = [
     {
       prompt: 'How intense do you want your coaster?',
       render: () => (
-        <div style={{ display: 'grid', gap: '0.75rem' }}>
+        <div className="grid gap-3">
           {INTENSITY_OPTIONS.map((opt) => (
             <button
               key={opt.value}
@@ -111,7 +84,7 @@ export default function QuizClient({ coasters }: { coasters: QuizCoaster[] }) {
                 setTargetIntensity(opt.value);
                 setStep(1);
               }}
-              style={optionButtonStyle}
+              className="card text-left hover:border-royal transition-colors"
             >
               {opt.label}
             </button>
@@ -122,58 +95,31 @@ export default function QuizClient({ coasters }: { coasters: QuizCoaster[] }) {
     {
       prompt: 'How do you feel about loops and inversions?',
       render: () => (
-        <div style={{ display: 'grid', gap: '0.75rem' }}>
-          <button
-            onClick={() => {
-              setInversionPref('none');
-              setStep(2);
-            }}
-            style={optionButtonStyle}
-          >
+        <div className="grid gap-3">
+          <button onClick={() => { setInversionPref('none'); setStep(2); }} className="card text-left hover:border-royal transition-colors">
             No thanks, keep me right-side up
           </button>
-          <button
-            onClick={() => {
-              setInversionPref('some');
-              setStep(2);
-            }}
-            style={optionButtonStyle}
-          >
+          <button onClick={() => { setInversionPref('some'); setStep(2); }} className="card text-left hover:border-royal transition-colors">
             A few are fine
           </button>
-          <button
-            onClick={() => {
-              setInversionPref('love');
-              setStep(2);
-            }}
-            style={optionButtonStyle}
-          >
+          <button onClick={() => { setInversionPref('love'); setStep(2); }} className="card text-left hover:border-royal transition-colors">
             The more the better
           </button>
         </div>
       ),
     },
     {
-      prompt: 'Big heights and drops, or keep it lower to the ground?',
+      prompt: 'Do you like big heights and drops, or keep it lower to the ground?',
       render: () => (
-        <div style={{ display: 'grid', gap: '0.75rem' }}>
-          <button
-            onClick={() => setHeightPref('low')}
-            style={optionButtonStyle}
-          >
+        <div className="grid gap-3">
+          <button onClick={() => setHeightPref('low')} className="card text-left hover:border-royal transition-colors">
             Keep it low
           </button>
-          <button
-            onClick={() => setHeightPref('no-preference')}
-            style={optionButtonStyle}
-          >
+          <button onClick={() => setHeightPref('no-preference')} className="card text-left hover:border-royal transition-colors">
             Doesn't matter to me
           </button>
-          <button
-            onClick={() => setHeightPref('high')}
-            style={optionButtonStyle}
-          >
-            Go big
+          <button onClick={() => setHeightPref('high')} className="card text-left hover:border-royal transition-colors">
+            Go big or go home
           </button>
         </div>
       ),
@@ -184,32 +130,11 @@ export default function QuizClient({ coasters }: { coasters: QuizCoaster[] }) {
 
   return (
     <div>
-      <p style={{ color: '#666' }}>
+      <p className="font-mono text-xs uppercase tracking-wide text-navy-950/50 mb-2">
         Question {step + 1} of {questions.length}
       </p>
-      <h2>{current.prompt}</h2>
+      <h2 className="text-3xl mb-6">{current.prompt}</h2>
       {current.render()}
     </div>
   );
 }
-
-const buttonStyle: React.CSSProperties = {
-  padding: '0.75rem 1.5rem',
-  borderRadius: '6px',
-  border: '1px solid #333',
-  background: '#333',
-  color: '#fff',
-  cursor: 'pointer',
-  fontSize: '1rem',
-  marginTop: '1rem',
-};
-
-const optionButtonStyle: React.CSSProperties = {
-  padding: '1rem',
-  borderRadius: '6px',
-  border: '1px solid #ddd',
-  background: '#fff',
-  cursor: 'pointer',
-  fontSize: '1rem',
-  textAlign: 'left',
-};
