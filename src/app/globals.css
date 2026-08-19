@@ -1,26 +1,81 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-display: "Bebas Neue", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --color-navy-950: #0B1B2B;
+  --color-navy-800: #142A40;
+  --color-plate: #ECEFF3;
+  --color-paper: #FFFFFF;
+  --color-steel: #B8C2CC;
+  --color-ink: #0B1B2B;
+  --color-signal: #FF5A1F;
+  --color-caution: #F4D000;
+  --color-royal: #2F4BE0;
+  --color-royal-dark: #2138B0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    font-family: var(--font-body);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.95;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-body font-semibold text-sm uppercase tracking-wide transition-colors bg-royal text-white hover:bg-royal-dark;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-body font-semibold text-sm uppercase tracking-wide transition-colors border border-white text-white hover:bg-white hover:text-navy-950;
+  }
+  .btn-outline-dark {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-body font-semibold text-sm uppercase tracking-wide transition-colors border border-navy-950 text-navy-950 hover:bg-navy-950 hover:text-white;
+  }
+
+  .card {
+    @apply border border-steel bg-paper rounded-xl p-6;
+  }
+
+  .badge-open {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-mono text-xs uppercase tracking-wide bg-[#D9F2E3] text-[#0F6B3F];
+  }
+  .badge-closed {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-mono text-xs uppercase tracking-wide bg-[#FBDADA] text-[#8A2323];
+  }
+  .badge-unknown {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-mono text-xs uppercase tracking-wide bg-plate text-[#45505B];
+  }
+
+  .track-divider {
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--color-steel) 0 8px,
+      transparent 8px 16px
+    );
+  }
+}
+
+@layer utilities {
+  @keyframes flip-in {
+    0% { opacity: 0; transform: translateY(6px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-flip-in {
+    animation: flip-in 0.45s ease-out both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-flip-in { animation: none; }
+  }
 }
