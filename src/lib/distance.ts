@@ -2,7 +2,7 @@
 
 // Purpose: Calculates the straight line distance
 // between two points on Earth using the Haversine formula. Good enough
-// for "nearest coaster," not meant to replace driving directions.
+// for "nearest coaster," not meant to replace driving directions
 
 export function haversineDistanceMiles(
   lat1: number,
