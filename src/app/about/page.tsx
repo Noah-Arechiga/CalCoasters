@@ -24,7 +24,7 @@ const faqs = [
   {
     question: 'Where do the coaster photos come from?',
     answer:
-      'Photos are sourced from public-domain and Creative Commons-licensed images, primarily via Wikimedia Commons. If you believe an image is used incorrectly, please contact: arechiganoah@gmail.com.',
+      'Photos are sourced from public-domain and Creative Commons-licensed images, primarily via Wikimedia Commons. Note that photos may be outdated, and each coaster may look slightly different compared each the photo. If you believe an image is used incorrectly, please contact: arechiganoah@gmail.com.',
   },
   {
     question: 'Where do the coaster stats and specs come from, and how accurate are they?',
