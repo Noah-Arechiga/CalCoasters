@@ -52,6 +52,7 @@ export default async function HomePage() {
       parkName: c.park.name,
       region: c.park.region,
       type: c.type,
+      design: c.design,
       imageUrl: c.imageUrl,
       isOpen: live?.is_open ?? null,
       waitMinutes: live?.wait_time ?? null,

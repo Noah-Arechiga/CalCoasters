@@ -14,6 +14,7 @@ interface NearbyCoaster {
   name: string;
   slug: string;
   type: string;
+  design: string;
   imageUrl: string | null;
   intensityScore: number;
   distanceMiles: number;
@@ -86,6 +87,7 @@ export default function NearestCoasters() {
                 imageUrl={coaster.imageUrl}
                 name={coaster.name}
                 type={coaster.type}
+                design={coaster.design}
                 className="w-full h-24"
               />
               <div className="p-3">

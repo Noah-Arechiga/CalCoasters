@@ -8,7 +8,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { getParkWaitTimes, findRideWaitTime } from '@/lib/queue-times';
+import { getParkWaitTimes, findRideWaitTime, type QueueTimesRide } from '@/lib/queue-times';
 
 export async function GET(
   request: NextRequest,
@@ -39,7 +39,7 @@ export async function GET(
     });
   }
 
-  let liveRides;
+  let liveRides: QueueTimesRide[];
   try {
     liveRides = await getParkWaitTimes(park.queueTimesParkId);
   } catch (error) {

@@ -28,6 +28,7 @@ export async function GET(request: NextRequest) {
       name: coaster.name,
       slug: coaster.slug,
       type: coaster.type,
+      design: coaster.design,
       imageUrl: coaster.imageUrl,
       intensityScore: coaster.intensityScore,
       distanceMiles:
