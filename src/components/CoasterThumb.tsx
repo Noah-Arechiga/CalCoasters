@@ -10,7 +10,6 @@ interface CoasterThumbProps {
   imageUrl: string | null;
   name: string;
   type: string;
-  design: string;
   className?: string;
 }
 
@@ -18,7 +17,6 @@ export default function CoasterThumb({
   imageUrl,
   name,
   type,
-  design,
   className = '',
 }: CoasterThumbProps) {
   if (imageUrl) {
@@ -30,7 +28,6 @@ export default function CoasterThumb({
       className={`flex items-center justify-center bg-gradient-to-br from-navy-800 to-royal text-white ${className}`}
     >
       <span className="font-display text-lg tracking-wide opacity-70">{type}</span>
-      <span className="font-display text-lg tracking-wide opacity-70">{formatEnumLabel(design ?? type)}</span>
     </div>
   );
 }

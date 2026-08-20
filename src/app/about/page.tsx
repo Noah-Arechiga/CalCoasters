@@ -56,11 +56,12 @@ export default function AboutPage() {
         <h1 className="text-5xl mb-8">Why This Site Exists</h1>
 
         <p className="font-body text-lg text-navy-950/80 leading-relaxed mb-6">
-          As a SoCal native and roller coaster enthusiast, I enjoy frequently looking at all the stats 
-          of coasters I grew up with, along with the wait times. However, I noticed in order
-          to see the wait times for all of these coasters, you would have to download the app for
-          each theme park. I decided  to build a unified site that allows you to see the wait times
-          for all SoCal theme parks, without needing to download any apps for it.
+          As a SoCal native and roller coaster enthusiast, I frequently enjoy looking at all the stats 
+          and wait times of coasters I grew up with. However, I noticed in order to see the wait times
+          for all of these coasters, you would have to either download the app for each theme park or
+          you are not able to check wait times unless you are within the theme park. I decided to 
+          build a unified site that allows you to see the wait times for all SoCal theme parks,
+          while being able to see stats for some of the best coasters in the world!
         </p>
         <p className="font-body text-lg text-navy-950/80 leading-relaxed mb-16">
           I hope that people will use this site as an alternative to not only not having
